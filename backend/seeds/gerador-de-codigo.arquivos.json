@@ -1,0 +1,120 @@
+[{
+  "_id": {
+    "$oid": "6754ce05760eb6acd676c663"
+  },
+  "projeto": {
+    "$oid": "6754cd3f760eb6acd676c65e"
+  },
+  "nome": "Controller.js",
+  "caminho": "src/controllers",
+  "tipo": "dinamico",
+  "nomeConcatenado": true,
+  "camelCase": true,
+  "prompt": "gere o código do Controller com todos os verbos",
+  "ordem": 40
+},
+{
+  "_id": {
+    "$oid": "675598a9760eb6acd676c68b"
+  },
+  "projeto": {
+    "$oid": "6754cd3f760eb6acd676c65e"
+  },
+  "nome": "server.js",
+  "caminho": "src/",
+  "tipo": "estatico",
+  "nomeConcatenado": false,
+  "camelCase": false,
+  "conteudo": "const app = require('./app');\nconst PORT = process.env.PORT;\n\napp.listen(PORT, () => {\n  console.log(`Servidor rodando na porta ${PORT}`);\n});\n",
+  "ordem": 10
+},
+{
+  "_id": {
+    "$oid": "67559bdf760eb6acd676c68e"
+  },
+  "projeto": {
+    "$oid": "6754cd3f760eb6acd676c65e"
+  },
+  "nome": "Routes.js",
+  "caminho": "src/routes",
+  "tipo": "dinamico",
+  "nomeConcatenado": true,
+  "camelCase": true,
+  "prompt": "gere o código da Routers com todos os verbos",
+  "ordem": 50
+},
+{
+  "_id": {
+    "$oid": "67559bec760eb6acd676c68f"
+  },
+  "projeto": {
+    "$oid": "6754cd3f760eb6acd676c65e"
+  },
+  "nome": "app.js",
+  "caminho": "src/",
+  "tipo": "dinamico",
+  "nomeConcatenado": false,
+  "camelCase": false,
+  "ordem": 80,
+  "prompt": "gere o app, usando cors, helmet e winston, testando a conexão com o DB"
+},
+{
+  "_id": {
+    "$oid": "6755b37f760eb6acd676c692"
+  },
+  "projeto": {
+    "$oid": "6754cd3f760eb6acd676c65e"
+  },
+  "nome": ".js",
+  "caminho": "src/models",
+  "tipo": "dinamico",
+  "nomeConcatenado": true,
+  "camelCase": false,
+  "prompt": "gere o código da Model com as validações",
+  "ordem": 25
+},
+{
+  "_id": {
+    "$oid": "6755bba2760eb6acd676c693"
+  },
+  "projeto": {
+    "$oid": "6754cd3f760eb6acd676c65e"
+  },
+  "nome": "package.json",
+  "caminho": "",
+  "tipo": "dinamico",
+  "nomeConcatenado": false,
+  "camelCase": false,
+  "prompt": "gere o package.json com as dependencias necessárias",
+  "ordem": 100
+},
+{
+  "_id": {
+    "$oid": "6755bbd0760eb6acd676c694"
+  },
+  "projeto": {
+    "$oid": "6754cd3f760eb6acd676c65e"
+  },
+  "nome": ".env",
+  "caminho": "",
+  "tipo": "dinamico",
+  "nomeConcatenado": false,
+  "camelCase": false,
+  "ordem": 95,
+  "prompt": "gere o .env"
+},
+{
+  "_id": {
+    "$oid": "6755bc92760eb6acd676c695"
+  },
+  "projeto": {
+    "$oid": "6754cd3f760eb6acd676c65e"
+  },
+  "nome": "db.js",
+  "caminho": "src/",
+  "tipo": "estatico",
+  "nomeConcatenado": false,
+  "camelCase": false,
+  "conteudo": "const mongoose = require(\"mongoose\");\n\nconst config = {\n  dbServer: process.env.DB_SERVER,\n  dbUser: process.env.DB_USER,\n  dbPassword: process.env.DB_PASSWORD,\n  dbName: process.env.DB_NAME,\n  dbAuthSource: process.env.DB_AUTH_SOURCE,\n  dbReplicaSet: process.env.DB_REPLICA_SET,\n  dbTsl: process.env.DB_TSL,\n};\n\nlet mongoUri = `${config.dbServer}/${config.dbName}?`;\nif (config.dbAuthSource) mongoUri += `authSource=${config.dbAuthSource}&`;\nif (config.dbTsl) mongoUri += `tls=true&`;\nif (config.dbReplicaSet) mongoUri += `replicaSet=${config.dbReplicaSet}`;\n\nconst connectDB = async () => {\n  try {\n    await mongoose.connect(mongoUri, {\n      user: config.dbUser,\n      pass: config.dbPassword,\n    });\n    console.log(`Conectado ao MongoDB`);\n    console.log(` - Server: ${config.dbServer}`);\n    console.log(` - User: ${config.dbUser}`);\n    console.log(` - Database: ${config.dbName}`);\n  } catch (err) {\n    console.error(`Erro ao conectar ao MongoDB ${config.dbName}`, err);\n    process.exit(1); // Encerra o processo com falha\n  }\n};\n\nmodule.exports = { connectDB };\n",
+  "ordem": 15
+}]
