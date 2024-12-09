@@ -1,4 +1,0 @@
-{
-  "modulo": "Prestador",
-  "prompt": "Dados Gerais: SID, numerico com 7 digitos, Código SCI, com 7 numeros, status (ativo, em analise, pendente de revisão, inativo, arquivado), tipo (Pessoa Fisica ou Juridica), nome (obrigatório), email, nome da mae, data de nascimento, pis, rg, orgao emissor do rg; Endereco: Cep, Rua, Numero, Complemento, Cidade, Estado; Dados Bancários: Tipo de Conta (Corrente ou Poupança), Banco, Agencia, Conta, Comentarios de Revisão"
-}
