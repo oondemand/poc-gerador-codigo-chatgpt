@@ -1,10 +1,9 @@
-require('dotenv').config();
 const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
 
-exports.generateCode = async (messages) => {
-  try {
-    // console.log('Chamando a API do ChatGPT com as mensagens:', messages, "\n\n");
+const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
+exports.generateCode = async (messages, retries = 3, backoff = 300) => {
+  try {
     const response = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
       headers: {
@@ -12,11 +11,26 @@ exports.generateCode = async (messages) => {
         'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`
       },
       body: JSON.stringify({
-        model: 'gpt-4',
+        model: 'gpt-4', // Atualize para o modelo correto
         messages,
         temperature: 0
       })
     });
+
+    if (response.status === 429) { // Rate limit excedido
+      if (retries > 0) {
+        console.warn(`Rate limit atingido. Tentando novamente em ${backoff}ms...`);
+        await sleep(backoff);
+        return exports.generateCode(messages, retries - 1, backoff * 2);
+      } else {
+        throw new Error('Taxa de requisições excedida. Tente novamente mais tarde.');
+      }
+    }
+
+    if (!response.ok) {
+      const errorData = await response.text();
+      throw new Error(`Erro na API do ChatGPT: ${response.status} - ${errorData}`);
+    }
 
     const data = await response.json();
 
