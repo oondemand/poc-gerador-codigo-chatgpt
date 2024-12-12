@@ -11,7 +11,7 @@ exports.generateCode = async (messages, retries = 3, backoff = 300) => {
         'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`
       },
       body: JSON.stringify({
-        model: 'gpt-4', // Atualize para o modelo correto
+        model: 'gpt-4o-mini', // Atualize para o modelo correto
         messages,
         temperature: 0
       })

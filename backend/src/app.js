@@ -12,5 +12,9 @@ app.use(express.json());
 
 app.use('/generate-code', require('./routes/codeGeneratorRoutes'));
 app.use("/clonar-codigo", require("./routes/clonarCodigoRoutes"));
+app.use("/arquivos", require("./routes/arquivoRoutes"));
+app.use("/projetos", require("./routes/projetoRoutes"));
+
+
 
 module.exports = app;

@@ -17,7 +17,6 @@ const arquivoSchema = new Schema({
   },
   conteudo: {
     type: String,
-    required: true
   },
   tipo: {
     type: String,

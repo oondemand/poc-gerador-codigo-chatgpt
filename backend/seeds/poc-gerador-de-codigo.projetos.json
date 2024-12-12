@@ -1,0 +1,9 @@
+[{
+  "_id": {
+    "$oid": "675b2e259a0ce90cfd22c8c4"
+  },
+  "nome": "poc-gerador-codigo-chatgpt",
+  "status": "ativo",
+  "prompt": "Projeto clonado do código existente no caminho: /home/maikon/Documentos/ondemand/poc-gerador-codigo-chatgpt. Futuramente será convertido em um prompt de alto nível.",
+  "__v": 0
+}]

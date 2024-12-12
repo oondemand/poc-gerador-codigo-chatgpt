@@ -27,55 +27,67 @@ exports.clonarCodigo = async (req, res) => {
       const dirPath = path.join(basePath, currentPath);
       const entries = await fs.readdir(dirPath, { withFileTypes: true });
 
+      const ignoreFiles = ["node_modules", "package-lock.json", "public", "license", ".git", ".vscode", "assets"]
+
       for (const entry of entries) {
         const fullPath = path.join(dirPath, entry.name);
-        if (entry.isDirectory()) {
-          await mapearArquivos(basePath, path.join(currentPath, entry.name));
-        } else {
-          const conteudo = await fs.readFile(fullPath, 'utf8');
 
-          const messages = [
-            {
-              role: 'system',
-              content: 'Você é um assistente que transforma código em um prompt descritivo de alto nível. Não precisa ter explicações do que é, apenas a especificação para fazer o caminho reverso do prompt para o código. Sempre responda apenas com o prompt, sem usar blocos de código Markdown, sem explicações adicionais, sem comentários. O prompt deve descrever o que o código faz, suas regras e propósito de forma abstrata e clara.'
-            },
-            {
-              role: 'user',
-              content: `Abaixo está o conteúdo de um arquivo do projeto clonado. Gere exclusivamente um prompt descritivo, sem código, sem comentários:\n${conteudo}`
+        console.log("ENTRY ->", entry.name);
+        
+
+        if(!ignoreFiles.includes(entry.name)){
+          console.log("PROCESSANDO", entry.name);
+          
+          if (entry.isDirectory()) {
+            await mapearArquivos(basePath, path.join(currentPath, entry.name));
+          } else {
+            const conteudo = await fs.readFile(fullPath, 'utf8');
+
+            const messages = [
+              {
+                role: 'system',
+                content: 'Você é um assistente que transforma código em um prompt descritivo de alto nível. Não precisa ter explicações do que é, apenas a especificação para fazer o caminho reverso do prompt para o código. Sempre responda apenas com o prompt, sem usar blocos de código Markdown, sem explicações adicionais, sem comentários. O prompt deve descrever o que o código faz, suas regras e propósito de forma abstrata e clara.'
+              },
+              {
+                role: 'user',
+                content: `Abaixo está o conteúdo de um arquivo do projeto clonado. Gere exclusivamente um prompt descritivo, sem código, sem comentários:\n${conteudo}`
+              }
+            ];
+
+            try {
+              const arquivoPromptGerado = await generateCode(messages);
+
+              const novoArquivo = new Arquivo({
+                projeto: projeto._id,
+                nome: entry.name,
+                caminho: currentPath || '.',  // <- Ajuste aqui
+                conteudo: conteudo || "",
+                tipo: 'estatico',
+                prompt: arquivoPromptGerado.trim(),
+                pascalCase: false,
+                nomeConcatenado: false,
+                ordem: ordem
+              });
+
+              console.log("\n---------------------------------------------------");
+              console.log(`Arquivo ${entry.name} mapeado com sucesso!`);
+              console.log(novoArquivo);
+              
+              await novoArquivo.save();
+
+              ordem += 10;
+            } catch (error) {
+              console.error(`Erro ao gerar prompt para o arquivo ${entry.name}:`, error);
+              // Opcional: Continue processando outros arquivos ou interrompa
             }
-          ];
-
-          try {
-            const arquivoPromptGerado = await generateCode(messages);
-
-            const novoArquivo = new Arquivo({
-              projeto: projeto._id,
-              nome: entry.name,
-              caminho: currentPath || '.',  // <- Ajuste aqui
-              conteudo: conteudo,
-              tipo: 'estatico',
-              prompt: arquivoPromptGerado.trim(),
-              pascalCase: false,
-              nomeConcatenado: false,
-              ordem: ordem
-            });
-
-            console.log("\n---------------------------------------------------");
-            console.log(`Arquivo ${entry.name} mapeado com sucesso!`);
-            console.log(novoArquivo);
-            
-            await novoArquivo.save();
-
-            ordem += 10;
-          } catch (error) {
-            console.error(`Erro ao gerar prompt para o arquivo ${entry.name}:`, error);
-            // Opcional: Continue processando outros arquivos ou interrompa
           }
-        }
+          }
       }
     }
 
     await mapearArquivos(caminho);
+    console.log("Arquivos processados");
+    
 
     res.status(201).json({ message: 'Projeto e arquivos clonados com sucesso, prompts gerados!', projetoId: projeto._id });
   } catch (error) {
