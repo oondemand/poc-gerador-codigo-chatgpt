@@ -28,7 +28,7 @@ const arquivoSchema = new Schema({
     type: String,
     required: true
   },
-  camelCase: {
+  pascalCase: {
     type: Boolean,
     default: false
   },
