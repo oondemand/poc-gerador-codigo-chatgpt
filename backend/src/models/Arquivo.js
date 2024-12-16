@@ -17,7 +17,6 @@ const arquivoSchema = new Schema({
   },
   conteudo: {
     type: String,
-    required: true
   },
   tipo: {
     type: String,
@@ -28,7 +27,7 @@ const arquivoSchema = new Schema({
     type: String,
     required: true
   },
-  camelCase: {
+  pascalCase: {
     type: Boolean,
     default: false
   },

@@ -1,9 +1,10 @@
 import React from 'react';
 import CodeGenerator from './components/CodeGenerator';
 
+
 const App = () => {
   return (
-    <div>
+    <div >
       <h1>Assistente de Geração de Formulários e Cards</h1>
       <CodeGenerator />
     </div>

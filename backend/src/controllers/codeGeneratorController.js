@@ -10,8 +10,8 @@ exports.createCode = async (req, res) => {
   try {
     const { projetoId, nome, prompt } = req.body;
 
-    if (!projetoId || !prompt || !nome) {
-      return res.status(400).json({ error: 'projetoId, prompt e nome são obrigatórios.' });
+    if (!projetoId) {
+      return res.status(400).json({ error: 'projetoId são obrigatórios.' });
     }
 
     const projeto = await Projeto.findOne({ _id: projetoId, status: 'ativo' });
@@ -80,6 +80,9 @@ exports.createCode = async (req, res) => {
       await fs.writeFile(filePath, code, 'utf8');
       generatedFilePaths.push(filePath);
     }
+
+    console.log("[OPERAÇÃO REALIZADA COM SUCESSO]");
+    
 
     res.status(200).json({ message: 'Código gerado com sucesso!', filePaths: generatedFilePaths });
   } catch (error) {
